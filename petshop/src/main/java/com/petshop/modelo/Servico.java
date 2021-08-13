@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.petshop.modelo.enums.TipoAnimal;
 
 @Entity
@@ -27,9 +29,11 @@ public class Servico {
 	private double preco;
 	private Integer codTipoAnimal;
 
+	@JsonIgnore
 	@ManyToMany
 	private List<Compra> compras;
 
+	@JsonIgnore
 	@ManyToOne
 	private Promocao promocao;
 

@@ -6,6 +6,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.petshop.modelo.enums.TipoAnimal;
 
 @Entity
@@ -22,6 +23,7 @@ public class Animal {
 	private double peso;
 	private Integer idade;
 
+	@JsonIgnore
 	@ManyToOne
 	private Cliente cliente;
 

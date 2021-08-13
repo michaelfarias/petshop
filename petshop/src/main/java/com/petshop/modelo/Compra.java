@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.petshop.modelo.enums.FormaPagamento;
 
 @Entity
@@ -18,10 +19,13 @@ public class Compra {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	@JsonIgnore
 	@ManyToOne
 	private Cliente cliente;
+	
 	@OneToMany
 	private List<Servico> servicos;
+	
 	private Integer formaPagamento;
 
 	public Compra() {
