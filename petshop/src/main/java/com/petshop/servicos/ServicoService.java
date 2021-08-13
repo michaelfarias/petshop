@@ -19,4 +19,8 @@ public class ServicoService {
 		return repo.findByCodTipoAnimal(codTipoAnimal);
 	}
 
+	public List<Servico> findDistinctByNomeContaining(String nome) {
+		return repo.findDistinctByNomeContaining(nome);
+	}
+
 }

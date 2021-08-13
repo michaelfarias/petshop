@@ -11,4 +11,6 @@ import com.petshop.modelo.Servico;
 public interface ServicoRepository extends JpaRepository<Servico, Integer> {
 
 	List<Servico> findByCodTipoAnimal(Integer codTipoAnimal);
+
+	List<Servico> findDistinctByNomeContaining(String nome);
 }

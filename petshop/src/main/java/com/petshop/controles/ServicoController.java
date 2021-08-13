@@ -20,4 +20,9 @@ public class ServicoController {
 	public ResponseEntity<?> listarServicoPorAnimal(@RequestParam(value = "animal") Integer codTipoAnimal) {
 		return ResponseEntity.ok(service.findByCodTipoAnimal(codTipoAnimal));
 	}
+
+	@GetMapping(value = "nome")
+	public ResponseEntity<?> listaServicoPorNome(@RequestParam(value = "nome") String nome) {
+		return ResponseEntity.ok().body(service.findDistinctByNomeContaining(nome));
+	}
 }
