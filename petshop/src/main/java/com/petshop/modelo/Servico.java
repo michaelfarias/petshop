@@ -11,8 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.petshop.modelo.enums.StatusServico;
 import com.petshop.modelo.enums.TipoAnimal;
 
 @Entity
@@ -28,6 +28,7 @@ public class Servico {
 	private List<LocalTime> horaAtendimentos;
 	private double preco;
 	private Integer codTipoAnimal;
+	private Integer status;
 
 	@JsonIgnore
 	@ManyToMany
@@ -41,14 +42,15 @@ public class Servico {
 
 	}
 
-	public Servico(String nome, String descricao, List<LocalTime> horaAtendimentos, double preco,
-			Integer codTipoAnimal) {
+	public Servico(String nome, String descricao, List<LocalTime> horaAtendimentos, double preco, Integer codTipoAnimal,
+			Integer status) {
 
 		this.nome = nome;
 		this.descricao = descricao;
 		this.horaAtendimentos = horaAtendimentos;
 		this.preco = preco;
 		this.codTipoAnimal = codTipoAnimal;
+		this.status = status;
 	}
 
 	public Integer getId() {
@@ -97,6 +99,14 @@ public class Servico {
 
 	public void setTipoAnimal(TipoAnimal tipoAnimal) {
 		this.codTipoAnimal = tipoAnimal.getCod();
+	}
+
+	public StatusServico getStatus() {
+		return StatusServico.toEnum(this.status);
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public List<Compra> getCompras() {

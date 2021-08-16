@@ -56,7 +56,7 @@ public class PetshopApplication implements CommandLineRunner {
 		clienteRepository.save(cliente1);
 
 		Servico servico1 = new Servico("Banho de agua", "Passar shampoo, pentear", Arrays.asList(LocalTime.now()),
-				45.99, 1);
+				45.99, 1, 2);
 		servicoRepository.save(servico1);
 
 		Promocao promocao1 = new Promocao("Dia do bixo", 20, 1);
