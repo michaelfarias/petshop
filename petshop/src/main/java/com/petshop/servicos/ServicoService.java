@@ -23,4 +23,8 @@ public class ServicoService {
 		return repo.findDistinctByNomeContaining(nome);
 	}
 
+	public Servico insert(Servico servico) {
+		return repo.save(servico);
+	}
+
 }
