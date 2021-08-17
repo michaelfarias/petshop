@@ -24,6 +24,13 @@ public class ServicoController {
 	@Autowired
 	private ServicoService service;
 
+	@GetMapping
+	public ResponseEntity<?> listarServicos() {
+		List<Servico> servicos = service.findAll();
+		List<ServicoDTO> servicosDto = service.toDto(servicos);
+		return ResponseEntity.ok().body(servicosDto);
+	}
+
 	@GetMapping(value = "animal")
 	public ResponseEntity<?> listarServicoPorAnimal(@RequestParam(value = "animal") Integer codTipoAnimal) {
 		List<Servico> servicos = service.findByCodTipoAnimal(codTipoAnimal);

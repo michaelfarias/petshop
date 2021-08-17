@@ -16,6 +16,10 @@ public class ServicoService {
 	@Autowired
 	private ServicoRepository repo;
 
+	public List<Servico> findAll() {
+		return repo.findAll();
+	}
+
 	public List<Servico> findByCodTipoAnimal(Integer codTipoAnimal) {
 
 		return repo.findByCodTipoAnimal(codTipoAnimal);
