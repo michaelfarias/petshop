@@ -1,10 +1,12 @@
 package com.petshop.servicos;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.petshop.dto.ServicoDTO;
 import com.petshop.modelo.Servico;
 import com.petshop.repositories.ServicoRepository;
 
@@ -19,12 +21,20 @@ public class ServicoService {
 		return repo.findByCodTipoAnimal(codTipoAnimal);
 	}
 
+	public List<Servico> findDistinctByPrecoContaining(String preco) {
+		return repo.findDistinctByPrecoContaining(preco);
+	}
+
 	public List<Servico> findDistinctByNomeContaining(String nome) {
 		return repo.findDistinctByNomeContaining(nome);
 	}
 
 	public Servico insert(Servico servico) {
 		return repo.save(servico);
+	}
+
+	public List<ServicoDTO> toDto(List<Servico> servicos) {
+		return servicos.stream().map(obj -> new ServicoDTO(obj)).collect(Collectors.toList());
 	}
 
 }

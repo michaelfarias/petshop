@@ -1,6 +1,7 @@
 package com.petshop.controles;
 
 import java.net.URI;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.petshop.dto.ServicoDTO;
 import com.petshop.modelo.Servico;
 import com.petshop.servicos.ServicoService;
 
@@ -24,7 +26,18 @@ public class ServicoController {
 
 	@GetMapping(value = "animal")
 	public ResponseEntity<?> listarServicoPorAnimal(@RequestParam(value = "animal") Integer codTipoAnimal) {
-		return ResponseEntity.ok(service.findByCodTipoAnimal(codTipoAnimal));
+		List<Servico> servicos = service.findByCodTipoAnimal(codTipoAnimal);
+		List<ServicoDTO> servicosDto = service.toDto(servicos);
+
+		return ResponseEntity.ok(servicosDto);
+	}
+
+	@GetMapping(value = "preco")
+	public ResponseEntity<?> listarServicoPorPreco(@RequestParam(value = "preco") String preco) {
+		List<Servico> servicos = service.findDistinctByPrecoContaining(preco);
+		List<ServicoDTO> servicosDto = service.toDto(servicos);
+
+		return ResponseEntity.ok(servicosDto);
 	}
 
 	@GetMapping(value = "nome")

@@ -26,7 +26,7 @@ public class Servico {
 	private String descricao;
 	@ElementCollection
 	private List<LocalTime> horaAtendimentos;
-	private double preco;
+	private Double preco;
 	private Integer codTipoAnimal;
 	private Integer status;
 
@@ -42,7 +42,7 @@ public class Servico {
 
 	}
 
-	public Servico(String nome, String descricao, List<LocalTime> horaAtendimentos, double preco, Integer codTipoAnimal,
+	public Servico(String nome, String descricao, List<LocalTime> horaAtendimentos, Double preco, Integer codTipoAnimal,
 			Integer status) {
 
 		this.nome = nome;
@@ -85,11 +85,11 @@ public class Servico {
 		this.horaAtendimentos = horaAtendimentos;
 	}
 
-	public double getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(double preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 
