@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import com.petshop.modelo.Servico;
 import com.petshop.servicos.ServicoService;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/servicos")
 public class ServicoController {
 
@@ -49,7 +51,10 @@ public class ServicoController {
 
 	@GetMapping(value = "nome")
 	public ResponseEntity<?> listaServicoPorNome(@RequestParam(value = "nome") String nome) {
-		return ResponseEntity.ok().body(service.findDistinctByNomeContaining(nome));
+		List<Servico> servicos = service.findDistinctByNomeContaining(nome);
+		List<ServicoDTO> servicoDto = service.toDto(servicos);
+
+		return ResponseEntity.ok().body(servicoDto);
 	}
 
 	@PostMapping

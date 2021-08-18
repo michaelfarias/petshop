@@ -1,6 +1,7 @@
 package com.petshop.dto;
 
 import com.petshop.modelo.Servico;
+import com.petshop.modelo.enums.StatusServico;
 
 public class ServicoDTO {
 
@@ -43,8 +44,8 @@ public class ServicoDTO {
 		this.preco = preco;
 	}
 
-	public Integer getStatus() {
-		return status;
+	public StatusServico getStatus() {
+		return StatusServico.toEnum(this.status);
 	}
 
 	public void setStatus(Integer status) {
