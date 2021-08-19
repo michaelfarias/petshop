@@ -17,4 +17,9 @@ public class ClienteService {
 	public List<Cliente> findAll() {
 		return repo.findAll();
 	}
+
+	public Cliente insert(Cliente cliente) {
+		Cliente obj = repo.save(cliente);
+		return obj;
+	}
 }
