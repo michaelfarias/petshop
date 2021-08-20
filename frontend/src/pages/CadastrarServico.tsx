@@ -1,5 +1,7 @@
 import { FormEvent, useEffect, useState } from 'react';
 
+import { Siderbar } from '../components/Sidebar';
+
 import api from '../services/api';
 
 type TipoPromocao = {
@@ -32,6 +34,7 @@ export function CadastrarServico() {
 
     return (
         <div>
+            <Siderbar/>
             <h1>Cadastrar Servico</h1>
             <form onSubmit={handleCadastrarServico}>
                 Nome:<input type="text"

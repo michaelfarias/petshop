@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -5,6 +6,9 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { Button } from '@material-ui/core';
+
+import api from '../services/api';
 
 const useStyles = makeStyles({
     root: {
@@ -33,7 +37,28 @@ type Props = {
 export function Tabela(props: Props) {
     const classes = useStyles();
 
-    const servicos = props.dados;
+    const dados = props.dados
+    const [servicos, setServicos] = useState<TipoServico[]>([]);
+
+    useEffect(() => {
+        setServicos(dados);
+    }, [dados])
+
+    function deletarServico(id: number) {
+
+        const newServicos = servicos.filter((servico: TipoServico) => servico.id !== id);
+
+        api.delete(`servicos/${id}`).then(res => {
+
+            setServicos(newServicos)
+            // if(res.status === 409){
+            //     alert('Não foi possível excluir')
+            // }
+        }).catch(error => {
+            alert("erro ao excluir")
+        })
+
+    }
 
     return (
         <Paper className={classes.root}>
@@ -44,19 +69,35 @@ export function Tabela(props: Props) {
                         <TableCell align="right">Preço</TableCell>
                         <TableCell align="right">Status</TableCell>
                         <TableCell align="right">Desconto</TableCell>
+                        <TableCell align="right">Ações</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {servicos.map(servico =>
                     (
                         <TableRow key={servico.id}>
+
                             <TableCell component="th" scope="servico">
                                 {servico.nome}
                             </TableCell>
                             <TableCell align="right">{servico.preco}</TableCell>
                             <TableCell align="right">{servico.status}</TableCell>
                             <TableCell align="right">{servico.promocao ? `${servico.promocao.preco}%` : 'Sem desconto'}</TableCell>
-
+                            <TableCell align="right">
+                                <Button
+                                    variant='contained'
+                                    color='primary'
+                                    onClick={() => { deletarServico(servico.id) }}
+                                >
+                                    Excluir
+                                    </Button>
+                                <Button
+                                    variant='contained'
+                                    color='secondary'
+                                >
+                                    Editar
+                                     </Button>
+                            </TableCell>
                         </TableRow>
                     ))
                     }

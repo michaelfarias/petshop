@@ -7,6 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
+import { Siderbar } from '../components/Sidebar';
 import { Tabela } from './Tabela';
 
 import api from '../services/api';
@@ -36,6 +37,7 @@ export function ListarServico() {
 
     return (
         <div>
+            <Siderbar/>
             <form>
                 <TextField
                     id="outlined-basic"
