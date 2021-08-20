@@ -93,12 +93,12 @@ public class Servico {
 		this.preco = preco;
 	}
 
-	public TipoAnimal getTipoAnimal() {
+	public TipoAnimal getCodTipoAnimal() {
 		return TipoAnimal.toEnum(this.codTipoAnimal);
 	}
 
-	public void setTipoAnimal(TipoAnimal tipoAnimal) {
-		this.codTipoAnimal = tipoAnimal.getCod();
+	public void setCodTipoAnimal(Integer codTipoAnimal) {
+		this.codTipoAnimal = codTipoAnimal;
 	}
 
 	public StatusServico getStatus() {

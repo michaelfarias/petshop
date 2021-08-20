@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.petshop.dto.ServicoDTO;
+import com.petshop.form.ServicoForm;
 import com.petshop.modelo.Servico;
 import com.petshop.servicos.ServicoService;
 
@@ -58,7 +59,12 @@ public class ServicoController {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> cadastrarServico(@RequestBody Servico servico) {
+	public ResponseEntity<?> cadastrarServico(@RequestBody ServicoForm servicoForm) {
+		Servico servico = new Servico(servicoForm.getNome(), servicoForm.getDescricao(), null, servicoForm.getPreco(),
+				servicoForm.getCodTipoAnimal().getCod(), servicoForm.getStatus().getCod());
+
+		servico.setPromocao(servicoForm.getPromocao());
+
 		Servico obj = service.insert(servico);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
