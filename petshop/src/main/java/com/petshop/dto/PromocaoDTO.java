@@ -11,6 +11,9 @@ public class PromocaoDTO {
 	private double preco;
 	private Integer status;
 
+	public PromocaoDTO() {
+	}
+
 	public PromocaoDTO(Promocao promocao) {
 		this.id = promocao.getId();
 		this.nome = promocao.getNome();

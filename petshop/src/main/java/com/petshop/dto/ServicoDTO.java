@@ -12,6 +12,9 @@ public class ServicoDTO {
 	private Integer status;
 	private PromocaoDTO promocao;
 
+	public ServicoDTO() {
+	}
+
 	public ServicoDTO(Servico obj) {
 		this.id = obj.getId();
 		this.nome = obj.getNome();

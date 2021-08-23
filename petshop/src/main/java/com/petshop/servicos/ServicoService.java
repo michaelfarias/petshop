@@ -41,6 +41,15 @@ public class ServicoService {
 		return servicos.stream().map(obj -> new ServicoDTO(obj)).collect(Collectors.toList());
 	}
 
+	public void update(ServicoDTO servicoDto) {
+		Servico servico = repo.findById(servicoDto.getId()).get();
+		servico.setNome(servicoDto.getNome());
+		servico.setPreco(servicoDto.getPreco());
+		servico.setStatus(servicoDto.getStatus().getCod());
+
+		repo.save(servico);
+	}
+
 	public void delete(Integer id) {
 		repo.deleteById(id);
 	}
