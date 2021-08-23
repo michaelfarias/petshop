@@ -37,7 +37,7 @@ export function ListarServico() {
 
     return (
         <div>
-            <Siderbar/>
+            <Siderbar />
             <form>
                 <TextField
                     id="outlined-basic"

@@ -10,6 +10,7 @@ import { Button } from '@material-ui/core';
 
 import api from '../services/api';
 
+
 const useStyles = makeStyles({
     root: {
         width: '100%',
@@ -24,8 +25,9 @@ type TipoServico = {
     id: number;
     nome: string;
     preco: number;
-    status: string;
+    status: string | number;
     promocao: {
+        id?: number;
         preco: number
     };
 }
@@ -39,6 +41,8 @@ export function Tabela(props: Props) {
 
     const dados = props.dados
     const [servicos, setServicos] = useState<TipoServico[]>([]);
+    const [servicoSelecionado, setServicoSelecionado] = useState<TipoServico | undefined>();
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
 
     useEffect(() => {
         setServicos(dados);
@@ -60,8 +64,68 @@ export function Tabela(props: Props) {
 
     }
 
+    async function atualizarServico() {
+
+        const data = {
+            ...servicoSelecionado,
+            promocao: { id: servicoSelecionado?.promocao.id },
+            status: servicoSelecionado?.status === 'DISPONIVEL' ? 1 : 2,
+        }
+
+        console.log(data)
+
+        const response = await api.put('servicos', data);
+
+        if (response.status === 204) {
+            console.log("Atualização feita com sucesso.")
+        }
+    }
+
+    function onClickOpenModal(servicoSelecionado: TipoServico) {
+        setServicoSelecionado(servicoSelecionado);
+
+        setOpenDialog(true);
+    }
+
+    function onClickCloseModal() {
+        setOpenDialog(false);
+    }
+
     return (
         <Paper className={classes.root}>
+            {
+                servicoSelecionado && (
+
+                    <dialog open={openDialog}>
+
+                        Nome:<input
+                            type="text"
+                            value={servicoSelecionado.nome}
+                            onChange={e => { setServicoSelecionado({ ...servicoSelecionado, ['nome']: e.target.value }) }} /><br />
+
+                    Preço:<input
+                            type="number"
+                            value={servicoSelecionado.preco}
+                            onChange={e => { setServicoSelecionado({ ...servicoSelecionado, ['preco']: Number.parseFloat(e.target.value) }) }}
+                        /><br />
+
+                    Desconto:<input
+                            value={servicoSelecionado.promocao.preco}
+                            onChange={e => { setServicoSelecionado({ ...servicoSelecionado, ['promocao']: servicoSelecionado.promocao }) }}
+                        /><br />
+                    Status:
+                        <select
+                            onChange={e => setServicoSelecionado({ ...servicoSelecionado, ['status']: e.target.value })}>
+                            <option value="DISPONIVEL" selected={servicoSelecionado.status == 'DISPONIVEL'}>Disponível</option>
+                            <option value="INDISPONIVEL" selected={servicoSelecionado.status == 'INDISPONIVEL'}>Indisponível</option>
+                        </select>
+                        <br />
+
+                        <button onClick={() => { onClickCloseModal() }}>Fechar</button>
+                        <button onClick={() => { atualizarServico() }}>Salvar</button>
+                    </dialog>
+                )
+            }
             <Table className={classes.table} aria-label="simple table">
                 <TableHead>
                     <TableRow>
@@ -94,6 +158,7 @@ export function Tabela(props: Props) {
                                 <Button
                                     variant='contained'
                                     color='secondary'
+                                    onClick={() => { onClickOpenModal(servico) }}
                                 >
                                     Editar
                                      </Button>
