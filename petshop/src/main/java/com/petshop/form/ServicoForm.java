@@ -9,7 +9,7 @@ public class ServicoForm {
 	private String nome;
 	private String descricao;
 	private Double preco;
-	private Integer codTipoAnimal;
+	private Integer animal;
 	private Integer status;
 
 	private Promocao promocao;
@@ -38,12 +38,12 @@ public class ServicoForm {
 		this.preco = preco;
 	}
 
-	public TipoAnimal getCodTipoAnimal() {
-		return TipoAnimal.toEnum(this.codTipoAnimal);
+	public TipoAnimal getAnimal() {
+		return TipoAnimal.toEnum(this.animal);
 	}
 
-	public void setCodTipoAnimal(Integer codTipoAnimal) {
-		this.codTipoAnimal = codTipoAnimal;
+	public void setAnimal(Integer animal) {
+		this.animal = animal;
 	}
 
 	public StatusServico getStatus() {

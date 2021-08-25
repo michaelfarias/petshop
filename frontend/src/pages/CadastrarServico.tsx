@@ -1,22 +1,28 @@
-import { FormEvent, useEffect, useState } from 'react';
-
-import { Siderbar } from '../components/Sidebar';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import FormularioServico from '../components/FormularioServico';
 
 import api from '../services/api';
+import { Principal } from './Principal';
 
-type TipoPromocao = {
-    id: number;
-    nome: string;
-}
+type ServicoType = {
+    nome?: string;
+    descricao?: string;
+    animal?: string;
+    preco?: number;
+    status?: string;
+};
 
 export function CadastrarServico() {
-    const [nome, setNome] = useState('');
-    const [descricao, setDescricao] = useState('');
-    const [codTipoAnimal, setCodTipoAnimal] = useState('1');
-    const [preco, setPreco] = useState('0.0');
-    const [status, setStatus] = useState('1');
     const [selectedIdPromocao, setSelectedIdPromocao] = useState<number | string>();
-    const [promocoes, setPromocoes] = useState([]);
+    const [promocoes, setPromocoes] = useState<[]>([]);
+
+    const [servico, setServico] = useState<ServicoType>({
+        nome: '',
+        descricao: '',
+        animal: '1',
+        preco: 0.0,
+        status: '1',
+    });
 
     useEffect(() => {
         api.get('promocoes').then(res => {
@@ -26,63 +32,29 @@ export function CadastrarServico() {
 
     function handleCadastrarServico(event: FormEvent) {
         event.preventDefault();
-        console.log(selectedIdPromocao)
-        const data = { nome, descricao, codTipoAnimal, preco, status, promocao: { id: selectedIdPromocao } }
-        console.log(data)
+
+        const data = { ...servico, promocao: { id: selectedIdPromocao } }
+
         api.post('servicos', data);
     }
 
+    function handleSetState(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        setServico({ ...servico, [name]: value });
+    }
+
     return (
-        <div>
-            <Siderbar/>
-            <h1>Cadastrar Servico</h1>
-            <form onSubmit={handleCadastrarServico}>
-                Nome:<input type="text"
-                    onChange={e => setNome(e.target.value)} /><br />
-                Descrição: <textarea placeholder="Decreva aqui o serviço..."
-                    onChange={e => setDescricao(e.target.value)} /><br />
+        <Principal>
+            <h1>##### Cadastrar Serviço #####</h1>
 
-                Tipo de animal:
-                 <select name='tipo'
-                    onChange={e => { setCodTipoAnimal(e.target.value) }}>
-                    <option value='1'>Mamifero</option>
-                    <option value='2'>Peixe</option>
-                    <option value='3'>Réptil</option>
-                    <option value='4'>Ave</option>
-                    <option value='5'>Anfíbio</option>
-                </select>
-                <br />
-                   Preço: <input type="text" onChange={e => { setPreco(e.target.value) }} />
-                <br />
-                Status:
-                <select name='status' onChange={e => { setStatus(e.target.value) }}>
-                    <option value='1'>Disponível</option>
-                    <option value='2'>Indisponível</option>
-                </select>
-                <br />
-
-                <select
-                    onChange={e => { setSelectedIdPromocao(e.target.value) }}
-
-                >
-                    <option hidden>Selecione uma opção</option>
-                    {
-                        promocoes.map((promocao: TipoPromocao, index) =>
-                            <option
-                                key={index}
-                                value={promocao.id}
-
-                            >
-                                {promocao.nome}
-                            </option>
-                        )
-                    }
-                </select>
-                <br />
-                <button type="submit">
-                    Cadastrar
-                    </button>
-            </form>
-        </div>
+            <FormularioServico
+                handleSetState={handleSetState}
+                handleCadastrarServico={handleCadastrarServico}
+                setSelectedIdPromocao={setSelectedIdPromocao}
+                promocoes={promocoes}
+            />
+        </Principal>
     )
 }

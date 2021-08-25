@@ -10,7 +10,6 @@ import { Button } from '@material-ui/core';
 
 import api from '../services/api';
 
-
 const useStyles = makeStyles({
     root: {
         width: '100%',

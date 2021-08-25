@@ -65,7 +65,7 @@ public class ServicoController {
 	@PostMapping
 	public ResponseEntity<?> cadastrarServico(@RequestBody ServicoForm servicoForm) {
 		Servico servico = new Servico(servicoForm.getNome(), servicoForm.getDescricao(), null, servicoForm.getPreco(),
-				servicoForm.getCodTipoAnimal().getCod(), servicoForm.getStatus().getCod());
+				servicoForm.getAnimal().getCod(), servicoForm.getStatus().getCod());
 
 		servico.setPromocao(servicoForm.getPromocao());
 
@@ -78,7 +78,6 @@ public class ServicoController {
 
 	@PutMapping
 	public ResponseEntity<?> atualizarServico(@RequestBody ServicoDTO servicoDto) {
-		System.out.println(servicoDto.getPreco());
 		service.update(servicoDto);
 
 		return ResponseEntity.noContent().build();

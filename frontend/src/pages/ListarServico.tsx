@@ -7,7 +7,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 
-import { Siderbar } from '../components/Sidebar';
+import { Principal } from './Principal';
 import { Tabela } from './Tabela';
 
 import api from '../services/api';
@@ -37,27 +37,28 @@ export function ListarServico() {
 
     return (
         <div>
-            <Siderbar />
-            <form>
-                <TextField
-                    id="outlined-basic"
-                    label="Buscar..."
-                    variant="outlined"
-                    onChange={event => { setTextBuscar(event.target.value) }}
-                />
-                <FormControl component="fieldset">
-                    <FormLabel component="legend">Buscar por:</FormLabel>
-                    <RadioGroup aria-label="gender" name="gender1" onChange={event => { setOpcao(event.target.value) }}>
-                        <FormControlLabel value="nome" control={<Radio />} label="Nome" />
-                        <FormControlLabel value="preco" control={<Radio />} label="Preço" />
-                    </RadioGroup>
-                </FormControl>
-                <Button variant="contained" color="primary" onClick={handleButtonBuscar}>
-                    Buscar
+            <Principal>
+                <form>
+                    <TextField
+                        id="outlined-basic"
+                        label="Buscar..."
+                        variant="outlined"
+                        onChange={event => { setTextBuscar(event.target.value) }}
+                    />
+                    <FormControl component="fieldset">
+                        <FormLabel component="legend">Buscar por:</FormLabel>
+                        <RadioGroup aria-label="gender" name="gender1" onChange={event => { setOpcao(event.target.value) }}>
+                            <FormControlLabel value="nome" control={<Radio />} label="Nome" />
+                            <FormControlLabel value="preco" control={<Radio />} label="Preço" />
+                        </RadioGroup>
+                    </FormControl>
+                    <Button variant="contained" color="primary" onClick={handleButtonBuscar}>
+                        Buscar
                 </Button>
 
-            </form>
-            <Tabela dados={servicos} />
+                </form>
+                <Tabela dados={servicos} />
+            </Principal>
         </div>
     )
 }
