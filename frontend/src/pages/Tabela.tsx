@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -9,6 +9,7 @@ import Paper from '@material-ui/core/Paper';
 import { Button } from '@material-ui/core';
 
 import api from '../services/api';
+import FormularioServico from '../components/FormularioServico';
 
 const useStyles = makeStyles({
     root: {
@@ -27,7 +28,7 @@ type TipoServico = {
     status: string | number;
     promocao: {
         id?: number;
-        preco: number
+        preco: number;
     };
 }
 
@@ -40,7 +41,7 @@ export function Tabela(props: Props) {
 
     const dados = props.dados
     const [servicos, setServicos] = useState<TipoServico[]>([]);
-    const [servicoSelecionado, setServicoSelecionado] = useState<TipoServico | undefined>();
+    const [servicoSelecionado, setServicoSelecionado] = useState<TipoServico | any>();
     const [openDialog, setOpenDialog] = useState<boolean>(false);
 
     useEffect(() => {
@@ -60,10 +61,10 @@ export function Tabela(props: Props) {
         }).catch(error => {
             alert("erro ao excluir")
         })
-
     }
 
-    async function atualizarServico() {
+    async function handleAtualizarServico(event: FormEvent) {
+        event.preventDefault();
 
         const data = {
             ...servicoSelecionado,
@@ -71,13 +72,30 @@ export function Tabela(props: Props) {
             status: servicoSelecionado?.status === 'DISPONIVEL' ? 1 : 2,
         }
 
+        servicos.forEach(item => {
+            if (item.id === servicoSelecionado.id) {
+                item.nome = servicoSelecionado.nome;
+                item.preco = servicoSelecionado.preco;
+                item.status = servicoSelecionado.status;
+            }
+        })
+        setServicos(servicos);
+        onClickCloseModal();
+
         console.log(data)
 
-        const response = await api.put('servicos', data);
+        // const response = await api.put('servicos', data);
 
-        if (response.status === 204) {
-            console.log("Atualização feita com sucesso.")
-        }
+        // if (response.status === 204) {
+        //     console.log("Atualização feita com sucesso.")
+        // }
+    }
+
+    function handleSetState(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        setServicoSelecionado({ ...servicoSelecionado, [name]: value });
     }
 
     function onClickOpenModal(servicoSelecionado: TipoServico) {
@@ -96,8 +114,17 @@ export function Tabela(props: Props) {
                 servicoSelecionado && (
 
                     <dialog open={openDialog}>
+                        <FormularioServico
+                            handleButtonSalvar={handleAtualizarServico}
+                            handleSetState={handleSetState}
 
-                        Nome:<input
+                            servico={servicoSelecionado}
+                            nomeButton="Atualizar"
+                        />
+
+                        <button onClick={() => { onClickCloseModal() }}>Fechar</button>
+
+                        {/* Nome:<input
                             type="text"
                             value={servicoSelecionado.nome}
                             onChange={e => { setServicoSelecionado({ ...servicoSelecionado, ['nome']: e.target.value }) }} /><br />
@@ -121,7 +148,7 @@ export function Tabela(props: Props) {
                         <br />
 
                         <button onClick={() => { onClickCloseModal() }}>Fechar</button>
-                        <button onClick={() => { atualizarServico() }}>Salvar</button>
+                        <button onClick={() => { atualizarServico() }}>Salvar</button> */}
                     </dialog>
                 )
             }
@@ -153,14 +180,14 @@ export function Tabela(props: Props) {
                                     onClick={() => { deletarServico(servico.id) }}
                                 >
                                     Excluir
-                                    </Button>
+                                </Button>
                                 <Button
                                     variant='contained'
                                     color='secondary'
                                     onClick={() => { onClickOpenModal(servico) }}
                                 >
                                     Editar
-                                     </Button>
+                                </Button>
                             </TableCell>
                         </TableRow>
                     ))

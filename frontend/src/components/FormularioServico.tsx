@@ -1,36 +1,60 @@
 import { ChangeEvent, FormEvent } from "react";
 
+type TipoServico = {
+    id: number;
+    nome: string;
+    preco: number;
+    status: string | number;
+    descricao: string;
+    promocao: {
+        id?: number;
+        preco: number;
+    };
+}
+
 type FunctionTypes = {
-    handleCadastrarServico?: (event: FormEvent) => void;
-    handleSetState?: (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+    handleButtonSalvar?: (event: FormEvent) => void;
+    handleSetState?: ((event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void);
     setSelectedIdPromocao?: (id: number | string) => void;
+
+    servico?: TipoServico | any;
     promocoes?: [];
+    nomeButton?: string;
 }
 
 export default function FormularioServico(
     {
-        handleCadastrarServico,
+        handleButtonSalvar,
         handleSetState,
         setSelectedIdPromocao,
-        promocoes
+
+        promocoes,
+        servico,
+        nomeButton
 
     }: FunctionTypes) {
 
     return (
         <div>
-            <form onSubmit={handleCadastrarServico}>
-                Nome: <input type="text" name="nome" onChange={handleSetState} /><br />
-                Descrição: <input type="textarea" name="descricao" onChange={handleSetState} /><br />
-                Tipo de Animal:
-                <select name="animal" onChange={handleSetState}>
-                    <option value='1'>Mamifero</option>
-                    <option value='2'>Peixe</option>
-                    <option value='3'>Réptil</option>
-                    <option value='4'>Ave</option>
-                    <option value='5'>Anfíbio</option>
-                </select>
+            <form onSubmit={handleButtonSalvar}>
+                Nome: <input type="text" value={servico && servico.nome} name="nome" onChange={handleSetState} />
                 <br />
-                Preço: <input type="text" name="preco" onChange={handleSetState} />
+                {!servico &&
+                    <>
+                        Descrição: <input type="textarea" value={servico && servico.descricao} name="descricao" onChange={handleSetState} /><br />
+                        <br />
+                        Tipo de Animal:
+                        <select name="animal" onChange={handleSetState}>
+                            <option value='1'>Mamifero</option>
+                            <option value='2'>Peixe</option>
+                            <option value='3'>Réptil</option>
+                            <option value='4'>Ave</option>
+                            <option value='5'>Anfíbio</option>
+                        </select>
+                        <br />
+                    </>
+                }
+                Preço: <input type="text" value={servico && servico.preco} name="preco" onChange={handleSetState} />
                 <br />
                 Status:
                 <select name="status" onChange={handleSetState} >
@@ -38,10 +62,10 @@ export default function FormularioServico(
                     <option value='2'>Indisponível</option>
                 </select>
                 <br />
-                Promoções:
                 {
                     promocoes &&
-                    (
+                    <>
+                        Promoções:
                         <select name="status" onChange={e => { setSelectedIdPromocao && setSelectedIdPromocao(e.target.value) }} >
                             <option hidden />
                             {
@@ -50,10 +74,10 @@ export default function FormularioServico(
                                 ))
                             }
                         </select>
-                    )
+                    </>
                 }
                 <br />
-                <button type='submit'>Cadastrar</button>
+                <button type='submit'>{nomeButton}</button>
             </form>
         </div>
     );

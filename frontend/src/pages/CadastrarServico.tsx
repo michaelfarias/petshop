@@ -51,9 +51,11 @@ export function CadastrarServico() {
 
             <FormularioServico
                 handleSetState={handleSetState}
-                handleCadastrarServico={handleCadastrarServico}
+                handleButtonSalvar={handleCadastrarServico}
                 setSelectedIdPromocao={setSelectedIdPromocao}
                 promocoes={promocoes}
+                
+                nomeButton="Cadastrar"
             />
         </Principal>
     )
