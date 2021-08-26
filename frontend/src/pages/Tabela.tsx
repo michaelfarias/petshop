@@ -41,12 +41,12 @@ export function Tabela(props: Props) {
 
     const dados = props.dados
     const [servicos, setServicos] = useState<TipoServico[]>([]);
-    const [servicoSelecionado, setServicoSelecionado] = useState<TipoServico | any>();
+    const [servicoSelecionado, setServicoSelecionado] = useState<TipoServico>();
     const [openDialog, setOpenDialog] = useState<boolean>(false);
 
     useEffect(() => {
         setServicos(dados);
-    }, [dados])
+    }, [dados]);
 
     function deletarServico(id: number) {
 
@@ -55,9 +55,7 @@ export function Tabela(props: Props) {
         api.delete(`servicos/${id}`).then(res => {
 
             setServicos(newServicos)
-            // if(res.status === 409){
-            //     alert('Não foi possível excluir')
-            // }
+
         }).catch(error => {
             alert("erro ao excluir")
         })
@@ -69,33 +67,34 @@ export function Tabela(props: Props) {
         const data = {
             ...servicoSelecionado,
             promocao: { id: servicoSelecionado?.promocao.id },
-            status: servicoSelecionado?.status === 'DISPONIVEL' ? 1 : 2,
+            status: (servicoSelecionado?.status == 'DISPONIVEL' || servicoSelecionado?.status == 1) ? 1 : 2,
         }
 
         servicos.forEach(item => {
-            if (item.id === servicoSelecionado.id) {
+            if (item.id === servicoSelecionado?.id) {
                 item.nome = servicoSelecionado.nome;
                 item.preco = servicoSelecionado.preco;
-                item.status = servicoSelecionado.status;
+                item.status = (servicoSelecionado.status == 1 ||
+                    servicoSelecionado.status == 'DISPONIVEL') ?
+                    'DISPONIVEL' : 'INDISPONIVEL';
             }
         })
+
         setServicos(servicos);
         onClickCloseModal();
 
-        console.log(data)
+        const response = await api.put('servicos', data);
 
-        // const response = await api.put('servicos', data);
-
-        // if (response.status === 204) {
-        //     console.log("Atualização feita com sucesso.")
-        // }
+        if (response.status === 204) {
+            console.log("Atualização feita com sucesso.")
+        }
     }
 
     function handleSetState(event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const name = event.target.name;
         const value = event.target.value;
 
-        setServicoSelecionado({ ...servicoSelecionado, [name]: value });
+        servicoSelecionado && setServicoSelecionado({ ...servicoSelecionado, [name]: value });
     }
 
     function onClickOpenModal(servicoSelecionado: TipoServico) {
@@ -123,32 +122,6 @@ export function Tabela(props: Props) {
                         />
 
                         <button onClick={() => { onClickCloseModal() }}>Fechar</button>
-
-                        {/* Nome:<input
-                            type="text"
-                            value={servicoSelecionado.nome}
-                            onChange={e => { setServicoSelecionado({ ...servicoSelecionado, ['nome']: e.target.value }) }} /><br />
-
-                    Preço:<input
-                            type="number"
-                            value={servicoSelecionado.preco}
-                            onChange={e => { setServicoSelecionado({ ...servicoSelecionado, ['preco']: Number.parseFloat(e.target.value) }) }}
-                        /><br />
-
-                    Desconto:<input
-                            value={servicoSelecionado.promocao.preco}
-                            onChange={e => { setServicoSelecionado({ ...servicoSelecionado, ['promocao']: servicoSelecionado.promocao }) }}
-                        /><br />
-                    Status:
-                        <select
-                            onChange={e => setServicoSelecionado({ ...servicoSelecionado, ['status']: e.target.value })}>
-                            <option value="DISPONIVEL" selected={servicoSelecionado.status == 'DISPONIVEL'}>Disponível</option>
-                            <option value="INDISPONIVEL" selected={servicoSelecionado.status == 'INDISPONIVEL'}>Indisponível</option>
-                        </select>
-                        <br />
-
-                        <button onClick={() => { onClickCloseModal() }}>Fechar</button>
-                        <button onClick={() => { atualizarServico() }}>Salvar</button> */}
                     </dialog>
                 )
             }
