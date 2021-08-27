@@ -18,6 +18,10 @@ public class ClienteService {
 		return repo.findAll();
 	}
 
+	public Cliente findByNome(String nome) {
+		return repo.findByNome(nome);
+	}
+
 	public Cliente insert(Cliente cliente) {
 		Cliente obj = repo.save(cliente);
 		return obj;
