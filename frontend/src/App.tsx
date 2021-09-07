@@ -6,6 +6,7 @@ import { CadastrarServico } from './pages/CadastrarServico';
 import { ListarClientes } from './pages/ListarClientes';
 
 import { Siderbar } from './components/Sidebar';
+import { ComprarServico } from './pages/ComprarServico';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path='/cadastrarcliente' component={CadastrarCliente} />
         <Route path='/cadastrarservico' component={CadastrarServico} />
         <Route path='/listarclientes' component={ListarClientes} />
+        <Route path='/comprarservico' component={ComprarServico} />
       </Switch>
     </BrowserRouter>
   );

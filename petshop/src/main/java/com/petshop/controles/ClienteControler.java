@@ -2,6 +2,8 @@ package com.petshop.controles;
 
 import java.net.URI;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.petshop.dto.ClienteDTO;
+import com.petshop.form.ClienteForm;
 import com.petshop.modelo.Cliente;
 import com.petshop.servicos.ClienteService;
 
@@ -39,7 +42,10 @@ public class ClienteControler {
 	}
 
 	@PostMapping
-	public ResponseEntity<?> cadastrarCliente(@RequestBody Cliente cliente) {
+	public ResponseEntity<?> cadastrarCliente(@Valid @RequestBody ClienteForm clienteForm) {
+		Cliente cliente = new Cliente(clienteForm.getLogin(), clienteForm.getSenha(), clienteForm.getNome(),
+				clienteForm.getEmail(), clienteForm.getCpf(), clienteForm.getTelefone());
+
 		Cliente obj = service.insert(cliente);
 
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();

@@ -16,7 +16,11 @@ export function CadastrarCliente() {
     function handleCadastrarCliente(event: FormEvent) {
         event.preventDefault();
         console.log(values)
-        api.post('clientes', values);
+        api.post('clientes', values).then(res => { }).catch(erro => {
+            const { data } = erro.response
+            console.log(data)
+
+        });
 
     }
 
@@ -36,10 +40,10 @@ export function CadastrarCliente() {
                 Cpf: <input type="text" name="cpf" onChange={handleSetState} /><br />
                 Telefone: <input type="text" name="telefone" onChange={handleSetState} /><br />
                 Login: <input type="text" name="login" onChange={handleSetState} /> <br />
-               Senha: <input type="password" name="senha" onChange={handleSetState} /><br />
+                Senha: <input type="password" name="senha" onChange={handleSetState} /><br />
                 <button type="submit">
                     Cadastrar
-               </button>
+                </button>
             </form>
         </div>
     );
