@@ -14,26 +14,23 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class ErroDeValidacaoHandler {
+public class ErroValidacaoFormHandle {
 
 	@Autowired
 	private MessageSource messageSource;
 
 	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public List<ErroDeFormularioForm> handle(MethodArgumentNotValidException exception) {
+	public List<ErroValidacaoForm> handle(MethodArgumentNotValidException exception) {
+		List<ErroValidacaoForm> errors = new ArrayList<ErroValidacaoForm>();
 
-		List<ErroDeFormularioForm> errosForm = new ArrayList<>();
+		List<FieldError> fieldErros = exception.getBindingResult().getFieldErrors();
 
-		List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
-
-		fieldErrors.forEach(error -> {
-			String message = messageSource.getMessage(error, LocaleContextHolder.getLocale());
-			ErroDeFormularioForm erroForm = new ErroDeFormularioForm(error.getField(), message);
-
-			errosForm.add(erroForm);
+		fieldErros.forEach(e -> {
+			String message = messageSource.getMessage(e, LocaleContextHolder.getLocale());
+			ErroValidacaoForm erro = new ErroValidacaoForm(e.getField(), message);
+			errors.add(erro);
 		});
-
-		return errosForm;
+		return errors;
 	}
 }

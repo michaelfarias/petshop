@@ -2,15 +2,24 @@ package com.petshop.form;
 
 import javax.validation.constraints.NotEmpty;
 
-
 public class ClienteForm {
 
 	@NotEmpty(message = "O nome não pode ser vazio")
 	private String nome;
+
+	@NotEmpty(message = "O email não pode ser vazio")
 	private String email;
+
+	@NotEmpty(message = "O cpf não pode ser vazio")
 	private String cpf;
+
+	@NotEmpty(message = "O telefone não pode ser vazio")
 	private String telefone;
+
+	@NotEmpty(message = "O login não pode ser vazio")
 	private String login;
+
+	@NotEmpty(message = "O senha não pode ser vazio")
 	private String senha;
 
 	public String getNome() {

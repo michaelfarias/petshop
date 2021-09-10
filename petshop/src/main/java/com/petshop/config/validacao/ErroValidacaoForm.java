@@ -1,11 +1,12 @@
 package com.petshop.config.validacao;
 
-public class ErroDeFormularioForm {
+public class ErroValidacaoForm {
 
 	private String campo;
 	private String erro;
 
-	public ErroDeFormularioForm(String campo, String erro) {
+	public ErroValidacaoForm(String campo, String erro) {
+		super();
 		this.campo = campo;
 		this.erro = erro;
 	}
@@ -14,8 +15,16 @@ public class ErroDeFormularioForm {
 		return campo;
 	}
 
+	public void setCampo(String campo) {
+		this.campo = campo;
+	}
+
 	public String getErro() {
 		return erro;
+	}
+
+	public void setErro(String erro) {
+		this.erro = erro;
 	}
 
 }
