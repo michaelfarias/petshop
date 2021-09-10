@@ -1,6 +1,9 @@
 import { FormEvent, ChangeEvent, useState } from "react";
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import api from '../services/api';
 
 const sigupSchema = yup.object().shape({
@@ -43,6 +46,7 @@ export function CadastrarCliente() {
 
   return (
     <div>
+      <ToastContainer />
       <h1>Cadastro de Cliente</h1>
 
       <Formik
@@ -56,7 +60,24 @@ export function CadastrarCliente() {
         }}
         validationSchema={sigupSchema}
         onSubmit={values => {
-          console.log(values)
+          console.log(JSON.stringify(values));
+         
+          api.post('clientes', values).then(res => {
+            const { status } = res
+
+            if (status == 200) {
+              toast.success('Cadastrado com sucesso!', { theme: 'colored', autoClose: 3000 })
+            }
+
+          }).catch(erro => {
+            const { data } = erro.response
+            data.map((erro:any)=>{
+
+              toast.error(erro.erro,{theme:'colored'})
+            })
+
+          });
+
         }}
       >
         {
