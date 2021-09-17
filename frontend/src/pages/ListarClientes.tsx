@@ -1,4 +1,6 @@
 import { FormEvent, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import api from '../services/api';
 
@@ -24,15 +26,19 @@ export function ListarClientes() {
         if (op === 'nome' || op === 'cpf') {
             api.get(`clientes/cliente/?${op}=${inputBuscar}`).then(res => {
                 setClientes([res.data]);
-            });
 
+            }).catch(err => {
+
+                const { mensagem } = err.response.data
+
+                toast.error(`${mensagem}`, { theme: 'colored', autoClose: 3000 })
+            });
         }
         else {
             api.get('clientes').then(res => {
                 setClientes(res.data);
             });
         }
-
     }
 
     function handleOpenDialog(value: boolean) {
@@ -53,6 +59,7 @@ export function ListarClientes() {
 
     return (
         <div>
+            <ToastContainer />
             <form onSubmit={buscarCliente}>
                 <dialog open={openDialog}>
 
@@ -92,7 +99,7 @@ export function ListarClientes() {
                     <th>Ações</th>
                 </thead>
                 <tbody>
-                    {clientes.map(cliente => (
+                    {clientes.length > 0 ? clientes.map(cliente => (
 
                         <tr key={cliente.id}>
                             <td>{cliente.nome}</td>
@@ -109,7 +116,9 @@ export function ListarClientes() {
                                 >Editar</button>
                             </td>
                         </tr>
-                    ))}
+                    )) :
+                        <div></div>
+                    }
                 </tbody>
             </table>
         </div>

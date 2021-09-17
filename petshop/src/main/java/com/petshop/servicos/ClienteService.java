@@ -9,6 +9,8 @@ import com.petshop.dto.ClienteDTO;
 import com.petshop.modelo.Cliente;
 import com.petshop.repositories.ClienteRepository;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 @Service
 public class ClienteService {
 
@@ -19,8 +21,14 @@ public class ClienteService {
 		return repo.findAll();
 	}
 
-	public Cliente findByNome(String nome) {
-		return repo.findByNome(nome);
+	public Cliente findByNome(String nome) throws ObjectNotFoundException {
+		Cliente cliente = repo.findByNome(nome);
+
+		if (cliente != null)
+			return cliente;
+
+		throw new ObjectNotFoundException("Cliente não encontrado! Tipo " + Cliente.class.getName());
+
 	}
 
 	public Cliente insert(Cliente cliente) {

@@ -21,6 +21,8 @@ import com.petshop.form.ClienteForm;
 import com.petshop.modelo.Cliente;
 import com.petshop.servicos.ClienteService;
 
+import javassist.tools.rmi.ObjectNotFoundException;
+
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/clientes")
@@ -35,7 +37,7 @@ public class ClienteControler {
 	}
 
 	@GetMapping(value = "cliente")
-	public ResponseEntity<?> listaClientePorNome(@RequestParam("nome") String nome) {
+	public ResponseEntity<?> listaClientePorNome(@RequestParam("nome") String nome) throws ObjectNotFoundException {
 		Cliente cliente = service.findByNome(nome);
 
 		return ResponseEntity.ok(cliente);

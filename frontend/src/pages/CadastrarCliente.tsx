@@ -6,6 +6,11 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import api from '../services/api';
 
+type ResponseErrorCampos = {
+  nome: string;
+  mensagem: string;
+}
+
 const sigupSchema = yup.object().shape({
   nome: yup.string().required('Campo obrigatório'),
   email: yup.string().email('Email inválido').required('Campo obrigatório'),
@@ -61,7 +66,7 @@ export function CadastrarCliente() {
         validationSchema={sigupSchema}
         onSubmit={values => {
           console.log(JSON.stringify(values));
-         
+
           api.post('clientes', values).then(res => {
             const { status } = res
 
@@ -70,10 +75,11 @@ export function CadastrarCliente() {
             }
 
           }).catch(erro => {
-            const { data } = erro.response
-            data.map((erro:any)=>{
+            const { campos } = erro.response.data
 
-              toast.error(erro.erro,{theme:'colored'})
+            campos.map((erro: ResponseErrorCampos) => {
+
+              toast.error(erro.mensagem, { theme: 'colored' })
             })
 
           });
