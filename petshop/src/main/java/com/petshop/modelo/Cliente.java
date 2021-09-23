@@ -2,10 +2,10 @@ package com.petshop.modelo;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Cliente extends Usuario {
@@ -20,6 +20,9 @@ public class Cliente extends Usuario {
 
 	@OneToMany
 	private List<Compra> compras;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Foto foto;
 
 	public Cliente() {
 		super();
@@ -82,4 +85,13 @@ public class Cliente extends Usuario {
 	public void setCompras(List<Compra> compras) {
 		this.compras = compras;
 	}
+
+	public Foto getFoto() {
+		return foto;
+	}
+
+	public void setFoto(Foto foto) {
+		this.foto = foto;
+	}
+
 }
