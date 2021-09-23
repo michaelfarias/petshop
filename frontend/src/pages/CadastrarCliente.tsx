@@ -31,6 +31,7 @@ export function CadastrarCliente() {
     senha: ''
   })
 
+  const [foto, setFoto] = useState<File | null>();
   function handleCadastrarCliente(event: FormEvent) {
     event.preventDefault();
     console.log(values)
@@ -61,13 +62,27 @@ export function CadastrarCliente() {
           cpf: '',
           telefone: '',
           login: '',
-          senha: ''
+          senha: '',
+          foto: File
         }}
         validationSchema={sigupSchema}
         onSubmit={values => {
-          console.log(JSON.stringify(values));
+          // console.log(JSON.stringify(values));
 
-          api.post('clientes', values).then(res => {
+          const data = new FormData();
+
+          data.append('nome', values.nome);
+          data.append('email', values.email);
+          data.append('cpf', values.cpf);
+          data.append('telefone', values.telefone);
+          data.append('login', values.login);
+          data.append('senha', values.senha);
+          if (foto) {
+            data.append('foto', foto);
+          }
+
+          api.post('clientes', data).then(res => {
+
             const { status } = res
 
             if (status == 200) {
@@ -107,6 +122,13 @@ export function CadastrarCliente() {
               Senha:<Field name="senha" type="password" />
               <ErrorMessage name="senha" /><br />
 
+              {/* Foto:<Field name="foto" type="file" />
+              <ErrorMessage name="foto" /><br /> */}
+              Foto: <input
+                name='file'
+                type='file'
+                onChange={e => { setFoto(e.target.files?.item(0)) }}
+                required /><br />
               <button type='submit'>Cadastrar</button>
             </Form>
           )
