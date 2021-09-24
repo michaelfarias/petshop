@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Foto {
 
@@ -13,17 +15,18 @@ public class Foto {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private String foto;
+	private String nome;
 
+	@JsonIgnore
 	@OneToOne
 	private Cliente cliente;
 
-	public String getFoto() {
-		return foto;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setFoto(String foto) {
-		this.foto = foto;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public Cliente getCliente() {

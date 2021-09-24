@@ -54,7 +54,7 @@ public class ClienteControler {
 
 		Foto f1 = new Foto();
 		f1.setCliente(cliente);
-		f1.setFoto(foto.getOriginalFilename());
+		f1.setNome(foto.getOriginalFilename());
 
 		cliente.setFoto(f1);
 
